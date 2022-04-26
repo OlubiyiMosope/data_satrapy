@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block content %}
+<p class="display-1 text-center">Create Posts Page</p>
+
+<div class="grid mx-5 mb-5">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="row my-3">
+        <legend class="border-bottom mb-4">New Post</legend>
+
+        <div  class="form-label">
+            {{ form.title.label(class="form-label") }}
+
+            {% if form.title.errors %}
+              {{ form.title(class="form-control form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.title.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.title(class="form-control form-control-md") }}
+            {% endif %}
+        </div>
+
+        <!-- CREATE DROPDOWN LIST OF FIELDS GOTTEN FROM AVAILABLE IN DATABASE -->
+
+        <div  class="form-label">
+            {{ form.content.label(class="form-label") }}
+
+            {% if form.content.errors %}
+              {{ form.content(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.content.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.content(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    </fieldset>
+      <div class="mb-2">
+      {{ form.submit(class="btn btn-outline-primary") }}
+      </div>
+  </form>
+</div>
+
+{% endblock content %}

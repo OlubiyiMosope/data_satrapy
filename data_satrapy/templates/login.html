@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block  content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="row">
+        <legend class="border-bottom my-2">Please Login To Your Account</legend>
+        <div class="form-label">
+            {{ form.email.label(class="form-label") }}
+            {% if form.email.errors %}
+                {{ form.email(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <div class="form-label">
+            {{ form.password.label(class="form.label") }}
+            {% if form.password.errors %}
+                {{ form.password(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.password(class="form-control") }}
+            {% endif %}
+
+
+        </div>
+
+        <div class="form-label mt-2">
+            {{ form.remember(class="form-check-input") }}
+            {{ form.remember.label(class="form-check-label") }}
+        </div>
+    </fieldset>
+
+    <div class="form-label mt-2">
+            {{ form.submit(class="btn btn-outline-primary") }}
+    </div>
+    <div class="my-2">
+        <small class="text-muted">
+            <a href="#">Forgot Password?</a>
+        </small>
+    </div>
+</form>
+<div class="border-top pt-3 mb-2">
+    <small class="text-muted">
+        Do Not Have An Account? <a href="{{ url_for('register') }}">Create An Account</a>
+    </small>
+</div>
+
+{% endblock content %}

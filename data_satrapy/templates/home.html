@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <p class="h1 text-center">Home Page</p>
+
+{% for post in posts %}
+    <div class="container my-2 bg-white border">
+            <h5 class="small border-bottom pt-2 pb-1 me-4 text-capitalize"> <!--  -->
+
+                <a class="me-2 text-decoration-none text-muted" href="#">{{ post.field.subject }}</a>
+                <small class="text-muted">{{ post.date_posted.strftime("%Y-%m-%d") }}</small>
+            </h5>
+            <div class="d-flex">
+                <h3 class="row text-capitalize" >
+                    <a href="{{ url_for('post', post_id=post_id) }}" class="text-decoration-none text-primary"
+                       onmouseover="this.style.color='#428bca'" onmouseout="this.style.backgroundColor=''">{{ post.title }}</a>
+                </h3>
+            </div>
+            <p style="color#fa10105d">{{ post.content }}</p>
+
+    </div>
+{% endfor %}
+
+{% endblock content %}
