@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+
+{% block auth_navbar %}
+  <li class="nav-item"> <a class="nav-link {{ add_field_active }}" href="{{ url_for('add_field') }}">Add Field</a> </li>
+{% endblock auth_navbar %}
+
+
+{% block content %}
+
+<div class="col-md-{{ grid_size }} grid">  <!-- d-flex justify-content-center -->
+    <form method="POST" action="" class="mb-5">
+        {{ form.hidden_tag() }}
+        <fieldset class="row my-3">
+          <legend class="border-bottom mb-2">Update / Delete Field</legend>
+          <div  class="form-label">
+            {{ form.old_field.label(class="form-label") }}
+
+            {% if form.old_field.errors %}
+              {{ form.old_field(class="form-control form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.old_field.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.old_field(class="form-control form-control-md") }}
+            {% endif %}
+
+            </div>
+            <div  class="form-label">
+            {{ form.new_field.label(class="form-label") }}
+
+            {% if form.new_field.errors %}
+              {{ form.new_field(class="form-control form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.new_field.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.new_field(class="form-control form-control-md") }}
+            {% endif %}
+
+            </div>
+        </fieldset>
+
+        <div class="form-label mt-2 mb-2">
+            {{ form.submit(class="btn btn-outline-primary") }}
+
+            <!-- Delete field button -->
+            <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Delete Existing Field
+            </button>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Field?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        This action is irreversible.
+                        Are you sure you want to delete {{ del_field }} field?
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <form action="{{ url_for('delete_field') }}" method="POST">
+                            <input class="btn btn-danger" name="del_field_button" type="submit" value="Delete">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+    <div class="border mb-4">
+        <p class="text-danger"><b>Data list / dropdown list for "Existing Field". </b></p>
+        <small class="text-danger">OR
+            <br> - add dropdown arrow for selectfield with bootstrap?
+            <br> - Default value for selectfield
+        </small>
+    </div>
+
+    <!-- List out fields in the database -->
+    <div class=" border-top  py-4">
+        <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
+        <div class="container">
+            <ul class="list-group row">
+                {% for subject in subjects %}
+                    <li class="list-group-item">{{ subject }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

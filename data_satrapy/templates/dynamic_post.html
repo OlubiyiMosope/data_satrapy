@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+
+{% block auth_navbar %}
+  <li class="nav-item"> <a class="nav-link" href="{{ url_for('add_field') }}">Add Field</a> </li>
+{% endblock auth_navbar %}
+
+
+{% block aboutme %}
+<div class="col-md-3 grid">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="row my-3">
+      <legend class="border-bottom mb-2">Create A Dynamic Post</legend>
+      <div  class="form-label">
+        {{ form.title.label(class="form-label") }}
+
+        {% if form.title.errors %}
+          {{ form.title(class="form-control form-control-md is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.title.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.title(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+
+        <div  class="form-label mt-2">
+            {{ form.post_subject.label(class="form-label") }}
+
+            {% if form.post_subject.errors %}
+              {{ form.post_subject(class="form-control form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.post_subject.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.post_subject(class="form-control form-control-md") }}
+            {% endif %}
+        </div>
+
+
+    </fieldset>
+  </form>
+</div>
+
+{% endblock aboutme %}
+
+
+{% block content %}
+  {% for subject in subjects %}
+    <p>{{ subject }}</p>
+  {% endfor %}
+
+{% endblock content %}

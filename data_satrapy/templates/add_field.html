@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+
+{% block auth_navbar %}
+  <li class="nav-item"> <a class="nav-link {{ add_field_active }}" href="{{ url_for('add_field') }}">Add Field</a> </li>
+{% endblock auth_navbar %}
+
+
+{% block content %}
+
+<div class="col-md-{{ grid_size }} grid">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="row my-3">
+          <legend class="border-bottom mb-2">Add New Field</legend>
+          <div  class="form-label">
+            {{ form.post_subject.label(class="form-label") }}
+
+            {% if form.post_subject.errors %}
+              {{ form.post_subject(class="form-control form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.post_subject.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.post_subject(class="form-control form-control-md") }}
+            {% endif %}
+
+            </div>
+        </fieldset>
+
+        <div class="form-label mt-2 mb-2">
+            {{ form.submit(class="btn btn-outline-primary") }}
+        </div>
+
+        <div  class="border-top mt-2 pt-3">
+          <small class="text-muted">
+            To update or delete fields,
+            <a class="ms-1" href="{{ url_for('update_field') }}">Click Here</a>  <!-- btn btn-outline-primary  btn-sm -->
+          </small>
+        </div>
+    </form>
+
+
+    <div class="">
+        <button type="button" class="btn btn-danger mt-4 ">
+            List Out Fields in Database
+        </button>
+        <small class="text-danger row m-1">consider drop down list</small>
+    </div>
+
+    <!-- List out fields in the database -->
+    <div class=" border-top  py-4">
+        <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
+        <div class="container">
+            <ul class="list-group row">
+                {% for subject in subjects %}
+                    <li class="list-group-item">{{ subject }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
