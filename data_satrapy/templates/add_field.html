@@ -1,11 +1,6 @@
 {% extends "layout.html" %}
 
 
-{% block auth_navbar %}
-  <li class="nav-item"> <a class="nav-link {{ add_field_active }}" href="{{ url_for('add_field') }}">Add Field</a> </li>
-{% endblock auth_navbar %}
-
-
 {% block content %}
 
 <div class="col-md-{{ grid_size }} grid">
@@ -34,12 +29,6 @@
             {{ form.submit(class="btn btn-outline-primary") }}
         </div>
 
-        <div  class="border-top mt-2 pt-3">
-          <small class="text-muted">
-            To update or delete fields,
-            <a class="ms-1" href="{{ url_for('update_field') }}">Click Here</a>  <!-- btn btn-outline-primary  btn-sm -->
-          </small>
-        </div>
     </form>
 
 
@@ -53,12 +42,13 @@
     <!-- List out fields in the database -->
     <div class=" border-top  py-4">
         <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
-        <div class="container">
-            <ul class="list-group row">
-                {% for subject in subjects %}
-                    <li class="list-group-item">{{ subject }}</li>
-                {% endfor %}
-            </ul>
+        <small class="row m-1 ps-2 text-muted">Click to update or delete field</small>
+        <div class="list-group">
+            {% for subject in subjects %}
+                <a href="{{ url_for('update_field', subject_id=subject[0]) }}" class="list-group-item list-group-item-action">
+                        {{ subject[1] }}
+                </a>
+            {% endfor %}
         </div>
     </div>
 

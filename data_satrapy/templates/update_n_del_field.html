@@ -24,7 +24,8 @@
                 {% endfor %}
               </div>
             {% else %}
-              {{ form.old_field(class="form-control form-control-md") }}
+              {{ form.old_field(class="form-control form-control-md disable") }}
+              <small class="text-danger">disable editing here for old_field?</small>
             {% endif %}
 
             </div>
@@ -49,7 +50,7 @@
             {{ form.submit(class="btn btn-outline-primary") }}
 
             <!-- Delete field button -->
-            <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 Delete Existing Field
             </button>
         </div>
@@ -68,14 +69,17 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         This action is irreversible.
-                        Are you sure you want to delete {{ del_field }} field?
+                        Are you sure you want to delete
+                        <mark class="text-light" style="background-color: #1d1d1db9">
+                            {{ del_field }}
+                        </mark> field?
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <form action="{{ url_for('delete_field') }}" method="POST">
-                            <input class="btn btn-danger" name="del_field_button" type="submit" value="Delete">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <form action="" method="POST">
+                            <input class="btn btn-danger btn-sm" type="submit" name="delete" value="delete">
                         </form>
                     </div>
 
@@ -97,10 +101,11 @@
     <!-- List out fields in the database -->
     <div class=" border-top  py-4">
         <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
+        <small class="text-danger">Make this functional. (extend add_field.html)</small>
         <div class="container">
             <ul class="list-group row">
                 {% for subject in subjects %}
-                    <li class="list-group-item">{{ subject }}</li>
+                    <li class="list-group-item">{{ subject[1] }}</li>
                 {% endfor %}
             </ul>
         </div>

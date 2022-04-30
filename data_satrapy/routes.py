@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from data_satrapy import app, db, bcrypt
-from data_satrapy.forms import RegistrationForm, LoginForm, DynamicPostForm, FieldForm, UpdateDeleteFieldForm
+from data_satrapy.forms import RegistrationForm, LoginForm, DynamicPostForm, AddFieldForm, UpdateDeleteFieldForm
 from data_satrapy.models import User, Post, Field
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -8,9 +8,21 @@ from flask_login import login_user, current_user, logout_user, login_required
 CONTENT_COL = 6
 CONTENT_COL_2 = 8
 
+
 # To list all the fields in the database (in alphabetical order)
-subjects = [str(field) for field in Field.query.all()]
-subjects.sort()
+def list_subjects():
+    fields = [field.subject for field in Field.query.all()]
+    fields.sort()
+
+    field_ids = []
+    for field in fields:
+        field = Field.query.filter_by(subject=field).first()
+        field_ids.append(field.id)
+
+    return list(zip(field_ids, fields))
+
+
+# subjects = list_subjects()
 
 
 @app.route("/")
@@ -85,54 +97,59 @@ def new_post():
 @app.route("/post")
 def post():
 
-    return render_template("post.html", grid_size=CONTENT_COL)
+    return render_template("post.html", title="Post", grid_size=CONTENT_COL)
 
 
 @app.route("/field/", methods=["GET", "POST"])
 @login_required
 def add_field():
-    form = FieldForm()
+    form = AddFieldForm()
+    subjects = list_subjects()
     if form.validate_on_submit():
         subject = str(form.post_subject.data).strip().title()
         # if not Field.query.filter_by(subject=subject).first():
         field = Field(subject=subject)
         db.session.add(field)
         db.session.commit()
-        flash("New field has been successfully added to database", "success")
-    return render_template("add_field.html", form=form, add_field_active="active",
+        flash(f"New field '{field.subject}' has been successfully added to database", "success")
+    return render_template("add_field.html", title="Add Field", form=form, add_field_active="active",
                            grid_size=CONTENT_COL_2, subjects=subjects)
 
 
-@app.route("/field/update", methods=["GET", "POST"])
+@app.route("/field/<int:subject_id>/update", methods=["GET", "POST"])
 @login_required
-def update_field():
+def update_field(subject_id):
+    subjects = list_subjects()
+    field = Field.query.get_or_404(subject_id)
     form = UpdateDeleteFieldForm()
-    form.new_field.data = "New field"
-    if form.validate_on_submit():  # extra_validators=None
-        # use form data to get the field to update
-        field = Field.query.filter_by(subject=str(form.old_field.data).title()).first()
-        field.subject = str(form.new_field.data).title()  # change old field to new field
+
+    # if request.method == "POST":
+    if request.form.get("delete") == "delete":
+        delete_field(subject_id)
+        return redirect(url_for("add_field"))
+
+    if form.validate_on_submit():
+        field.subject = form.new_field.data.strip().title()
         db.session.commit()
         flash("You have successfully updated the field", "success")
-    return render_template("update_n_del_field.html", form=form, subjects=subjects, grid_size=CONTENT_COL_2)
+        return redirect(url_for("update_field", subject_id=subject_id))
+    elif request.method == "GET":
+        form.old_field.data = field.subject
+        form.new_field.data = field.subject
+
+    return render_template("update_n_del_field.html", title="Update/Delete Field",
+                           form=form, subjects=subjects, grid_size=CONTENT_COL_2,
+                           del_field=field.subject)
 
 
-@app.route("/field/delete", methods=["POST"])
-@login_required
-def delete_field():
-    form = UpdateDeleteFieldForm()
-    del_field = form.old_field.data
-    if form.validate_on_submit():  # extra_validators=None
-        if request.method == "POST":
-            if request.form["del_field_button"] == "Delete":
-                # use form data to get the field to update
-                field = Field.query.filter_by(subject=str(form.old_field.data).title()).first_or_404()
-                db.session.delete(field)
-                db.session.commit()
-                flash("You have deleted the field", "success")
-                return redirect(url_for("update_field"))
-    return render_template("update_n_del_field.html", form=form, subjects=subjects,
-                           grid_size=CONTENT_COL_2, del_field=del_field)
+# @app.route("/field/<int:subject_id>/delete", methods=["POST"])
+# @login_required
+def delete_field(subject_id):
+    field = Field.query.get_or_404(subject_id)
+    flash(f"You have deleted field '{field.subject}'!", "success")
+    db.session.delete(field)
+    db.session.commit()
+    return redirect(url_for("add_field"))
 
 
 @app.route("/logout")

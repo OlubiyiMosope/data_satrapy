@@ -32,8 +32,8 @@
                 <li class="nav-item"> <a class="nav-link {{ about_active }}" href="{{ url_for('about') }}">About</a> </li>
                 {% if current_user.is_authenticated %}
                     <li class="nav-item"> <a class="nav-link {{ new_post_active }}" href="{{ url_for('new_post') }}">New Post</a> </li>
-                    {% block auth_navbar %} {% endblock auth_navbar %}
-                <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}">Logout</a> </li>
+                    <li class="nav-item"> <a class="nav-link {{add_field_active}}" href="{{ url_for('add_field') }}">Add Field</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}">Logout</a> </li>
                 {% else %}
                     <li class="nav-item"> <a class="nav-link {{ login_active }}" href="{{ url_for('login') }}">Admin Login</a> </li>
                     <li class="nav-item"> <a class="nav-link {{ register_active }}" href="{{ url_for('register') }}">Admin Register</a> </li>

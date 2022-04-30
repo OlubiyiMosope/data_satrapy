@@ -55,7 +55,7 @@ class DynamicPostForm(FlaskForm):
     submit = SubmitField("Create Post")
 
 
-class FieldForm(FlaskForm):
+class AddFieldForm(FlaskForm):
     post_subject = StringField("Add a new Field Subject",
                                validators=[DataRequired()])
     submit = SubmitField("Add Subject")
@@ -68,10 +68,10 @@ class FieldForm(FlaskForm):
 
 
 class UpdateDeleteFieldForm(FlaskForm):
-    old_field = SelectField("Existing Field", validators=[DataRequired()], choices=subjects)
+    old_field = StringField("Existing Field", validators=[DataRequired()])
     new_field = StringField("Amendment Field", validators=[DataRequired()])
-    submit = SubmitField("Commit Change")
-    delete_field = SubmitField("Delete Field")
+    submit = SubmitField("Update Field")
+    # delete_field = SubmitField("Delete Field")
 
     def validate_old_field(self, old_field):
         """
@@ -79,7 +79,7 @@ class UpdateDeleteFieldForm(FlaskForm):
         :param old_field:
         :return: ValidationError if old_field does not exist in database
         """
-        field_name = str(old_field.data).strip().title()  # convert to string, strip and capitalize each word.
+        field_name = old_field.data.strip().title()  # convert to string, strip and capitalize each word.
         field = Field.query.filter_by(subject=field_name).first()
         if not field:
             raise ValidationError("This field does not exist in the database. "
