@@ -28,7 +28,9 @@ def list_subjects():
 @app.route("/")
 @app.route("/home")
 def home():
-    posts = Post.query.all()
+    page = request.args.get("page", 1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()). \
+        paginate(page=page, per_page=5)
     return render_template("home.html", home_active="active", posts=posts,
                            grid_size=CONTENT_COL)
 
@@ -55,6 +57,8 @@ def register():
                            register_active="active", grid_size=CONTENT_COL)
 
 
+# *** LOGIN / LOGOUT ***
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -74,6 +78,15 @@ def login():
                            login_active="active", grid_size=CONTENT_COL)
 
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    flash("You have been logged out.", "success")
+    return redirect(url_for("home"))
+
+
+# *** POSTS ***
+
 @app.route("/post/new", methods=["GET", "POST"])
 @login_required
 def new_post():
@@ -91,14 +104,13 @@ def new_post():
                            subjects=subjects, new_post_active="active", grid_size=CONTENT_COL)
 
 
-# app.add_url_rule("/post/new", 'new_post', new_post)
-
-
 @app.route("/post")
 def post():
 
     return render_template("post.html", title="Post", grid_size=CONTENT_COL)
 
+
+# *** FIELDS ***
 
 @app.route("/field/", methods=["GET", "POST"])
 @login_required
@@ -112,8 +124,20 @@ def add_field():
         db.session.add(field)
         db.session.commit()
         flash(f"New field '{field.subject}' has been successfully added to database", "success")
+        return redirect(url_for("add_field"))  # to refresh the page
     return render_template("add_field.html", title="Add Field", form=form, add_field_active="active",
                            grid_size=CONTENT_COL_2, subjects=subjects)
+
+
+@app.route("/field/<string:field_name>")
+def field_posts(field_name):
+    page = request.args.get("page", 1, type=int)
+    subject = Field.query.filter_by(subject=field_name).first_or_404()
+    posts = Post.query.filter_by(field=subject)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template("field_posts.html", title=field_name, subject=subject,
+                           posts=posts, grid_size=CONTENT_COL_2)
 
 
 @app.route("/field/<int:subject_id>/update", methods=["GET", "POST"])
@@ -146,14 +170,7 @@ def update_field(subject_id):
 # @login_required
 def delete_field(subject_id):
     field = Field.query.get_or_404(subject_id)
-    flash(f"You have deleted field '{field.subject}'!", "success")
+    flash(f"You have deleted the field '{field.subject}'!", "success")
     db.session.delete(field)
     db.session.commit()
     return redirect(url_for("add_field"))
-
-
-@app.route("/logout")
-def logout():
-    logout_user()
-    flash("You have been logged out.", "success")
-    return redirect(url_for("home"))

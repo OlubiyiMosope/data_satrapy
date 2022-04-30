@@ -2,23 +2,26 @@
 {% block aboutme %}
 
     <div class="col-md-3  p-2 border bg-light rounded">
-                <div class="card bg-light border">
-                    <div class="card-header"> <h3 class="text-center">About Me</h3> </div>
-                    <div class="card-body"> <p>Lorem ipsum so dolor ihet dos baga</p> </div>
-                </div>
+        <div class="card bg-light border">
+            <div class="card-header"> <h3 class="text-center">About Me</h3> </div>
+            <div class="card-body"> <p>Lorem ipsum so dolor ihet dos baga</p> </div>
+</div>
 
 
     </div>
 {% endblock aboutme %}
 
 {% block content %}
-    <p class="h1 text-center">Home Page</p>
+    <p class="h1 text-center text-warning">Home Page</p>
 
-{% for post in posts %}
+{% for post in posts.items %}
     <div class="container my-2 bg-white border">
-            <h5 class="small border-bottom pt-2 pb-1 me-4 text-capitalize"> <!--  -->
+            <h5 class="small border-bottom pt-2 pb-1 me-4"> <!--  -->
 
-                <a class="me-2 text-decoration-none text-muted" href="#">{{ post.field.subject }}</a>
+                <a class="me-2 text-decoration-none text-muted"
+                   href="{{ url_for('field_posts', field_name=post.field.subject) }}">
+                    {{ post.field.subject }}
+                </a>
                 <small class="text-muted">{{ post.date_posted.strftime("%Y-%m-%d") }}</small>
             </h5>
             <div class="d-flex">
@@ -27,9 +30,22 @@
                        onmouseover="this.style.color='#428bca'" onmouseout="this.style.backgroundColor=''">{{ post.title }}</a>
                 </h3>
             </div>
-            <p style="color#fa10105d">{{ post.content }}</p>
-
+            <p>{{ post.content }}</p>
     </div>
+{% endfor %}
+
+
+<!-- Pagination -->
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-secondary btn-sm mt-4 mb-3" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-secondary btn-sm mt-4 mb-3" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
 {% endfor %}
 
 {% endblock content %}

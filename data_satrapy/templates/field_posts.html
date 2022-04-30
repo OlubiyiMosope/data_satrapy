@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="mb-3 mt-2 text-center">Posts in {{ subject.subject }} field, ({{ posts.total }})</h1>
+    {% for post in posts.items %}
+        <div class="container my-2 bg-white border">
+            <h5 class="small border-bottom pt-2 pb-1 me-4 text-dark">
+                {{ post.field.subject }}
+                <small class="text-muted ms-1">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            </h5>
+
+            <div>
+                <h3 class="row text-capitalize">
+                    <a class="text-decoration-none text-primary" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+                </h3>
+            </div>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
+
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-secondary btn-sm mt-4 mb-3"
+             href="{{ url_for('field_posts', field_name=subject.subject, page=page_num) }}">
+              {{ page_num }}
+          </a>
+        {% else %}
+          <a class="btn btn-outline-secondary btn-sm mt-4 mb-3 "
+             href="{{ url_for('field_posts', field_name=subject.subject, page=page_num) }}">
+              {{ page_num }}
+          </a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+
+
+{% endblock content %}
