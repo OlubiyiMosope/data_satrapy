@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block  content %}
 <form method="POST" action="">
     {{ form.hidden_tag() }}
@@ -41,13 +42,12 @@
     </fieldset>
 
     <div class="form-label mt-2">
-            {{ form.submit(class="btn btn-outline-primary") }}
-    </div>
-    <div class="my-2">
-        <small class="text-muted">
-            <a href="#">Forgot Password?</a>
+        {{ form.submit(class="btn btn-outline-primary") }}
+        <small class="text-muted mt-1 ms-2">
+            <a href="{{ url_for('reset_request') }}">Forgot Password?</a>
         </small>
     </div>
+
 </form>
 <div class="border-top pt-3 mb-2">
     <small class="text-muted">
