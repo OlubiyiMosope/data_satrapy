@@ -11,7 +11,7 @@
 
             <div>
                 <h3 class="row text-capitalize">
-                    <a class="text-decoration-none text-primary" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+                    <a class="text-decoration-none text-primary" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
                 </h3>
             </div>
             <p>{{ post.content }}</p>
@@ -22,12 +22,12 @@
       {% if page_num %}
         {% if posts.page == page_num %}
           <a class="btn btn-secondary btn-sm mt-4 mb-3"
-             href="{{ url_for('field_posts', field_name=subject.subject, page=page_num) }}">
+             href="{{ url_for('fields.field_posts', field_name=subject.subject, page=page_num) }}">
               {{ page_num }}
           </a>
         {% else %}
           <a class="btn btn-outline-secondary btn-sm mt-4 mb-3 "
-             href="{{ url_for('field_posts', field_name=subject.subject, page=page_num) }}">
+             href="{{ url_for('fields.field_posts', field_name=subject.subject, page=page_num) }}">
               {{ page_num }}
           </a>
         {% endif %}

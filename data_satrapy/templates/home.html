@@ -19,14 +19,14 @@
             <h5 class="small border-bottom pt-2 pb-1 me-4"> <!--  -->
 
                 <a class="me-2 text-decoration-none text-muted"
-                   href="{{ url_for('field_posts', field_name=post.field.subject) }}">
+                   href="{{ url_for('fields.field_posts', field_name=post.field.subject) }}">
                     {{ post.field.subject }}
                 </a>
                 <small class="text-muted">{{ post.date_posted.strftime("%Y-%m-%d") }}</small>
             </h5>
             <div class="d-flex">
                 <h3 class="row text-capitalize" >
-                    <a href="{{ url_for('post', post_id=post_id) }}" class="text-decoration-none text-primary"
+                    <a href="{{ url_for('posts.post', post_id=post_id) }}" class="text-decoration-none text-primary"
                        onmouseover="this.style.color='#428bca'" onmouseout="this.style.backgroundColor=''">{{ post.title }}</a>
                 </h3>
             </div>
@@ -39,9 +39,9 @@
 {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
     {% if page_num %}
         {% if posts.page == page_num %}
-          <a class="btn btn-secondary btn-sm mt-4 mb-3" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+          <a class="btn btn-secondary btn-sm mt-4 mb-3" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
         {% else %}
-          <a class="btn btn-outline-secondary btn-sm mt-4 mb-3" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+          <a class="btn btn-outline-secondary btn-sm mt-4 mb-3" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
         {% endif %}
     {% else %}
         ...

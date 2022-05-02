@@ -45,7 +45,7 @@
         <small class="row m-1 ps-2 text-muted">Click to update or delete field</small>
         <div class="list-group">
             {% for subject in subjects %}
-                <a href="{{ url_for('update_field', subject_id=subject[0]) }}" class="list-group-item list-group-item-action">
+                <a href="{{ url_for('fields.update_field', subject_id=subject[0]) }}" class="list-group-item list-group-item-action">
                         {{ subject[1] }}
                 </a>
             {% endfor %}

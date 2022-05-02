@@ -32,11 +32,13 @@
                 {% endfor %}
               </div>
             {% else %}
-              {{ form.post_subject(class="form-control form-control-md") }}
+<!--              <select>-->
+              {{ form.post_subject(class="form-select form-control-md", choices=options) }}
+<!--              </select>-->
             {% endif %}
         </div>
 
-
+    <!-- FORM INCOMPLETE -->
     </fieldset>
   </form>
 </div>
@@ -45,6 +47,7 @@
 
 
 {% block content %}
+<H3 CLASS="text-danger text-center border-bottom mb-3 pb-2">Page Incomplete!</H3>
   {% for subject in subjects %}
     <p>{{ subject }}</p>
   {% endfor %}
