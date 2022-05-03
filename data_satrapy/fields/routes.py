@@ -22,7 +22,7 @@ def add_field():
         field = Field(subject=subject)
         db.session.add(field)
         db.session.commit()
-        flash(f"New field '{field.subject}' has been successfully added to database", "success")
+        flash(f"New field '{field.subject}' has been added to database", "success")
         return redirect(url_for("fields.add_field"))  # to refresh the page
     return render_template("add_field.html", title="Add Field", form=form, add_field_active="active",
                            grid_size=CONTENT_COL_2, subjects=subjects)
@@ -57,9 +57,9 @@ def update_field(subject_id):
         flash("You have successfully updated the field", "success")
         return redirect(url_for("fields.update_field", subject_id=subject_id))
     elif request.method == "GET":
-        form.old_field.data = field.subject
+        # form.old_field.data = field.subject
         form.new_field.data = field.subject
 
     return render_template("update_n_del_field.html", title="Update/Delete Field",
                            form=form, subjects=subjects, grid_size=CONTENT_COL_2,
-                           del_field=field.subject)
+                           del_field=field.subject, current_field=field.subject)

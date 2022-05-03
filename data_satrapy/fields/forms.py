@@ -18,8 +18,8 @@ class AddFieldForm(FlaskForm):
 
 
 class UpdateDeleteFieldForm(FlaskForm):
-    old_field = StringField("Existing Field", validators=[DataRequired()])
-    new_field = StringField("Amendment Field", validators=[DataRequired()])
+    # old_field = StringField("Existing Field", validators=[DataRequired()])
+    new_field = StringField("New Field Name", validators=[DataRequired()])
     submit = SubmitField("Update Field")
     # delete_field = SubmitField("Delete Field")
 

@@ -8,28 +8,13 @@
 
 {% block content %}
 
-<div class="col-md-{{ grid_size }} grid">  <!-- d-flex justify-content-center -->
+<div class="col-md-{{ grid_size }} grid">  <!-- {# d-flex justify-content-center #} -->
     <form method="POST" action="" class="mb-5">
         {{ form.hidden_tag() }}
         <fieldset class="row my-3">
-          <legend class="border-bottom mb-2">Update / Delete Field</legend>
+          <legend class="border-bottom mb-2">Update / Delete <b>{{ current_field }}</b> Field</legend>
+
           <div  class="form-label">
-            {{ form.old_field.label(class="form-label") }}
-
-            {% if form.old_field.errors %}
-              {{ form.old_field(class="form-control form-control-md is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in form.old_field.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.old_field(class="form-control form-control-md disable") }}
-              <small class="text-danger">disable editing here for old_field?</small>
-            {% endif %}
-
-            </div>
-            <div  class="form-label">
             {{ form.new_field.label(class="form-label") }}
 
             {% if form.new_field.errors %}
@@ -43,7 +28,7 @@
               {{ form.new_field(class="form-control form-control-md") }}
             {% endif %}
 
-            </div>
+          </div>
         </fieldset>
 
         <div class="form-label mt-2 mb-2">
