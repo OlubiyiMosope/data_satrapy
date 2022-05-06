@@ -33,10 +33,12 @@ def create_app(config_class=Config):
     from data_satrapy.posts.routes import posts
     from data_satrapy.fields.routes import fields
     from data_satrapy.main.routes import main
+    from data_satrapy.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(fields)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
