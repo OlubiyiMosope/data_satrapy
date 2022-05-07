@@ -24,7 +24,7 @@
             </h5>
             <div class="d-flex">
                 <h3 class="row text-capitalize" >
-                    <a href="{{ url_for('posts.post', post_id=post_id) }}" class="text-decoration-none text-primary"
+                    <a href="{{ url_for('posts.post', post_id=post.id) }}" class="text-decoration-none text-primary"
                        onmouseover="this.style.color='#428bca'" onmouseout="this.style.backgroundColor=''">{{ post.title }}</a>
                 </h3>
             </div>

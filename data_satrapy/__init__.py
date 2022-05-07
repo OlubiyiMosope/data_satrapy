@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_pagedown import PageDown
 from data_satrapy.config import Config
 
 
@@ -12,6 +13,7 @@ login_manager = LoginManager()
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 mail = Mail()
+pagedown = PageDown()
 
 CONTENT_COL = 6
 CONTENT_COL_2 = 8
@@ -25,9 +27,10 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    pagedown.init_app(app)
 
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()
 
     from data_satrapy.users.routes import users
     from data_satrapy.posts.routes import posts

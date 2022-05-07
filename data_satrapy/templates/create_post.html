@@ -1,49 +1,86 @@
 {% extends "layout.html" %}
-{% block content %}
-<p class="display-1 text-center">Create Posts Page</p>
 
-<div class="grid mx-5 mb-5">
-  <form method="POST" action="">
+{% block aboutme %}
+<div class="col-md-5 grid m-3 bg-light">
+  <form method="POST" action="" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <fieldset class="row my-3">
-        <legend class="border-bottom mb-4">New Post</legend>
+      <legend class="border-bottom mb-2">{{ legend }}</legend>
+      <div  class="form-label">
+        {{ form.title.label(class="form-label") }}
 
-        <div  class="form-label">
-            {{ form.title.label(class="form-label") }}
-
-            {% if form.title.errors %}
-              {{ form.title(class="form-control form-control-md is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in form.title.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.title(class="form-control form-control-md") }}
-            {% endif %}
-        </div>
-
-        <!-- CREATE DROPDOWN LIST OF FIELDS GOTTEN FROM AVAILABLE IN DATABASE -->
-
-        <div  class="form-label">
-            {{ form.content.label(class="form-label") }}
-
-            {% if form.content.errors %}
-              {{ form.content(class="form-control form-control-lg is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in form.content.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.content(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-    </fieldset>
-      <div class="mb-2">
-      {{ form.submit(class="btn btn-outline-primary") }}
+        {% if form.title.errors %}
+          {{ form.title(class="form-control form-control-md is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.title.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.title(class="form-control form-control-md") }}
+        {% endif %}
       </div>
+
+      <div  class="form-label mt-2">
+          {{ form.post_subject.label(class="form-label") }}
+
+          {% if form.post_subject.errors %}
+            {{ form.post_subject(class="form-control form-control-md is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.post_subject.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.post_subject(class="form-select form-control-md", choices=options) }}
+          {% endif %}
+      </div>
+
+      <div class="form-label mt-2">
+          {{ form.thumbnail.label() }}
+          {{ form.thumbnail(class="form-control mt-1") }}
+
+          {% if form.thumbnail.errors %}
+              {% for error in form.thumbnail.errors %}
+                <span class="text-danger">{{ error }}</span> </br>
+              {% endfor %}
+          {% endif %}
+      </div>
+      <div class="form-label mt-2">
+        {{ form.content.label(class="form-label" ) }}
+
+        {% if form.content.errors %}
+          {{ form.content(class="form-control form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+              {% for error in form.content.errors%}
+                <span>{{ error }}</span>
+              {% endfor %}
+          </div>
+        {% else %}
+          {{ form.content(only_input=True, class="form-control form-control-lg" ) }}
+        {% endif %}
+
+      </div>
+    </fieldset>
+    <div class="form-label mt-2 mb-2">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+
+  </form>
+</div>
+
+{% endblock aboutme %}
+
+
+{% block content %}
+<div class="container m-3">
+  <legend class="text-center border-bottom mb-2">Content Rendering Preview</legend>
+
+  <form action="" class="border bg-white">
+    {{ form.content(only_preview=True,) }}
   </form>
 </div>
 
 {% endblock content %}
+
+{% block sidebar %}{% endblock %}
