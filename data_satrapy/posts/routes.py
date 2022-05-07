@@ -1,10 +1,11 @@
-from flask import (render_template, current_app, url_for, flash,
-                   redirect, abort, request, Blueprint)
+from flask import (render_template, url_for, flash, redirect,
+                   abort, request, Blueprint)
 from flask_login import login_required, current_user
 from data_satrapy import db, CONTENT_COL, CONTENT_COL_2
-from data_satrapy.models import Field, Post
+from data_satrapy.models import Post
 from data_satrapy.posts.forms import PostForm
 from data_satrapy.posts.utils import list_subs, save_picture, find_field
+from data_satrapy.main.utils import ordered_field_list, post_field_num
 
 
 posts = Blueprint("posts", __name__)
@@ -16,9 +17,12 @@ def post(post_id):
     if post.thumbnail:
         thumbnail = url_for("static", filename="pics/" + post.thumbnail)
         return render_template("post.html", title="Post", post=post,
-                           thumbnail=thumbnail, grid_size=CONTENT_COL_2)
+                               thumbnail=thumbnail, grid_size=CONTENT_COL_2)
+
+    fields_list = ordered_field_list()
     return render_template("post.html", title="Post", post=post,
-                           grid_size=CONTENT_COL_2)
+                           grid_size=CONTENT_COL_2,
+                           fields_list=fields_list, post_field_num=post_field_num)
 
 
 @posts.route("/post/new", methods=["GET", "POST"])
@@ -45,6 +49,7 @@ def new_post():
 
         flash("Your new post has been created!", "success")
         return redirect(url_for("main.home"))
+
     return render_template("create_post.html", title="New Post", form=form,
                            subjects=subjects, new_post_active="active",
                            legend="Create A New Post", grid_size=CONTENT_COL)
@@ -75,7 +80,7 @@ def update_post(post_id):
         form.content.data = post.content
 
     return render_template("create_post.html", title="Update Post",
-                           form=form, legend="Update Post", grid_size=CONTENT_COL)
+                           form=form, legend="Update Post", grid_size=CONTENT_COL,)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=["GET", "POST"])

@@ -32,21 +32,14 @@
     </form>
 
 
-    <div class="">
-        <button type="button" class="btn btn-danger mt-4 ">
-            List Out Fields in Database
-        </button>
-        <small class="text-danger row m-1">consider drop down list</small>
-    </div>
-
     <!-- List out fields in the database -->
-    <div class=" border-top  py-4">
+    <div class=" border-top py-5">
         <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
         <small class="row m-1 ps-2 text-muted">Click to update or delete field</small>
         <div class="list-group">
-            {% for subject in subjects %}
-                <a href="{{ url_for('fields.update_field', subject_id=subject[0]) }}" class="list-group-item list-group-item-action">
-                        {{ subject[1] }}
+            {% for field in fields_list %}
+                <a href="{{ url_for('fields.update_field', subject_id=field.id) }}" class="list-group-item list-group-item-action">
+                        {{ field.subject }}
                 </a>
             {% endfor %}
         </div>

@@ -34,6 +34,7 @@
                 <li class="nav-item"> <a class="nav-link {{ home_active }}" href="{{ url_for('main.home') }}">Home</a> </li>
                 <li class="nav-item"> <a class="nav-link {{ about_active }}" href="{{ url_for('main.about') }}">About</a> </li>
                 {% if current_user.is_authenticated %}
+                    <li class="nav-item"> <a class="nav-link {{ account_active }}" href="{{ url_for('users.account') }}">Account</a> </li>
                     <li class="nav-item"> <a class="nav-link {{ new_post_active }}" href="{{ url_for('posts.new_post') }}">New Post</a> </li>
                     <li class="nav-item"> <a class="nav-link {{add_field_active}}" href="{{ url_for('fields.add_field') }}">Add Field</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a> </li>
@@ -73,15 +74,16 @@
             <nav class="col-md-3 px-3 rounded">
                 <div class="content-section">
                     <h3 class="text-center mt-3">Quick Links</h3>
-                    <small class="text-center text-danger">Get fields from DB</small>
                       <div class="list-group mb-2">
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Machine Learning Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Deep Learning Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Data Science Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Data Engineering Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Python Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action d-flex justify-content-between align-items-center">Statistics Posts <span class="badge bg-primary rounded-pill">#</span> </a>
-                        <a href="#" class="list-group-item list-group-item-light list-group-item-action">Articles & More...</a>
+                          {% for field in fields_list %}
+                              <a href="{{ url_for('fields.field_posts', field_name=field.subject) }}"
+                                 class="list-group-item list-group-item-light list-group-item-action
+                                        d-flex justify-content-between align-items-center">
+                                  {{ field.subject }} Posts
+                                  <span class="badge bg-primary rounded-pill">{{ post_field_num(field.subject) }}</span>
+                              </a>
+                          {% endfor %}
+
                       </div>
                   </div>
                 {% block sidebar_nav %} {% endblock %}

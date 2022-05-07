@@ -1,10 +1,11 @@
 from flask import Blueprint, flash, redirect, request, render_template, url_for
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from data_satrapy import db, bcrypt, CONTENT_COL, CONTENT_COL_2
 from data_satrapy.models import User
-from data_satrapy.users.utils import send_reset_email
-from data_satrapy.users.forms import (RegistrationForm, LoginForm,
+from data_satrapy.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                       RequestResetForm, ResetPasswordForm)
+from data_satrapy.users.utils import send_reset_email, save_picture
+from data_satrapy.main.utils import ordered_field_list, post_field_num
 
 
 users = Blueprint('users', __name__)
@@ -22,8 +23,10 @@ def register():
         db.session.commit()
         flash(f"Your account has been created! You are now able to log in", "success")
         return redirect(url_for("main.home"))
+    fields_list = ordered_field_list()
     return render_template("register.html", title="Register", form=form,
-                           register_active="active", grid_size=CONTENT_COL)
+                           register_active="active", grid_size=CONTENT_COL,
+                           fields_list=fields_list, post_field_num=post_field_num)
 
 
 @users.route("/login", methods=["GET", "POST"])
@@ -41,8 +44,10 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
             flash("Login unsuccessful! Please check username and password.", "danger")
+    fields_list = ordered_field_list()
     return render_template("login.html", title="Login", form=form,
-                           login_active="active", grid_size=CONTENT_COL)
+                           login_active="active", grid_size=CONTENT_COL,
+                           fields_list=fields_list, post_field_num=post_field_num)
 
 
 @users.route("/logout")
@@ -50,6 +55,29 @@ def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("main.home"))
+
+
+@users.route("/account", methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.profile_img.data:
+            picture_file = save_picture(form.profile_img.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('users.account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='pics/' + current_user.image_file)
+    fields_list = ordered_field_list()
+    return render_template('account.html', title='Account', form=form, account_active="active",
+                           image_file=image_file, grid_size=CONTENT_COL_2,
+                           fields_list=fields_list, post_field_num=post_field_num)
 
 
 @users.route("/reset_password", methods=['GET', 'POST'])
@@ -62,7 +90,10 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('users.login'))
-    return render_template('reset_request.html', title='Reset Password', form=form, grid_size=CONTENT_COL_2)
+    fields_list = ordered_field_list()
+    return render_template('reset_request.html', title='Reset Password', form=form,
+                           grid_size=CONTENT_COL_2,
+                           fields_list=fields_list, post_field_num=post_field_num)
 
 
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
@@ -80,5 +111,8 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
+
+    fields_list = ordered_field_list()
     return render_template('reset_token.html', title='Reset Password',
-                           form=form, grid_size=CONTENT_COL_2)
+                           form=form, grid_size=CONTENT_COL_2,
+                           fields_list=fields_list, post_field_num=post_field_num)
