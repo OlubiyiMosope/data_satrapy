@@ -2,7 +2,6 @@ from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import bleach
 from markdown import markdown
-from sqlalchemy import event
 from flask import current_app
 from data_satrapy import db, login_manager
 from flask_login import UserMixin
