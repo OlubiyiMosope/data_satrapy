@@ -1,5 +1,8 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import bleach
+from markdown import markdown
+from sqlalchemy import event
 from flask import current_app
 from data_satrapy import db, login_manager
 from flask_login import UserMixin
@@ -48,10 +51,25 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    content_html = db.Column(db.Text,)
     thumbnail = db.Column(db.String(20))
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey("field.id"), nullable=False)  # default value for "others"
 
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ["a", "abbr", "acronym", "b", "blockquote", "code",
+        "em", "i", "li", "ol", "pre", "strong", "ul", "div", "form", "img"
+        "h1", "h2", "h3", "h4", "h5", "h6", "p", "button", "figure", "figcaption",
+        "section", "kbd", "dl", "mark", "small", "u", "strike", "center", "font",
+        "br", "hr", "table", "tr", "td", "th",]
+        target.content_html = bleach.linkify(bleach.clean(
+                                    markdown(value, output_format='html'),
+                                    tags=allowed_tags, strip=True))
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}', '{self.field}', '{self.thumbnail}')"
+
+
+db.event.listen(Post.content, 'set', Post.on_changed_body)
