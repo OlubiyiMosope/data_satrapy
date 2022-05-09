@@ -1,6 +1,44 @@
 {% extends "layout.html" %}
 {% block  content %}
-<p class="display-1 text-flex justify-content-center">About Page</p>
-<h3 class="d-flex justify-content-center">username: {{ current_user.username }}</h3>
+<div class="container mb-5 mt-3">
+    <img class="rounded-circle mx-auto d-block" src="{{ about_me_pic }}"
+         alt="My Picture">
+
+    <h5 class="text-dark text-center mt-3">Hi! I'm <strong>Mosope</strong>, a self-taught Data Scientist / Machine Learning Engineer'.</h5>
+        <p>
+            My academic background is in Mechanical Engineering, and I'm in the process of transitioning to the field of data science.
+            I'm self-taught, with 2+ years of experience using Python and Machine Learning.  <br /> <br />
+            This is my portfolio of projects that demonstrate some of the skills and competencies that I have learned over the course of
+            my self-study to become a machine learning Engineer / Data Scientist.
+        </p>
+
+</div>
+
+<section id="contact" class="m-4 bg">
+    <div class="container">
+
+        <header>
+            <h2 class="text-center">Contact</h2>
+        </header>
+
+        <p>For all enquiries, send me an email using the form below.</p>
+
+        <form method="post" action="https://formsubmit.co/66610318fb92e53f16546def9c97282e">
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-6"><input  class="form-control" type="text" name="name" placeholder="Name" /></div>
+                    <div class="col-md-6"><input  class="form-control" type="text" name="email" placeholder="Email" /></div>
+                    <div class="col-md-12 mt-2">
+                        <textarea  class="form-control form-control-lg" name="message" placeholder="Message"></textarea>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <input class="btn btn-primary" type="submit" value="Send Message" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+</section>
 
 {% endblock content %}

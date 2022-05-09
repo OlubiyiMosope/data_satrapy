@@ -1,16 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container mt-2 d-block justify-content-center">
-  {% if thumbnail %}
-    <img class="img-thumbnail mx-auto d-block" src="{{ thumbnail }}"
-     alt="Post Thumbnail">
-    <!-- Photo Credit -->
-<!--    <div class="card-body">-->
-<!--    <p class="card-text text-center"></p>-->
-<!--    </div>-->
-  {% endif %}
-</div>
-
 
 <div class="container my-2 bg-white border">
     <h5 class="small border-bottom pt-2 pb-1 me-4"> <!--  -->
@@ -26,6 +15,20 @@
             {{ post.title }}
         </h3>
     </div>
+
+    <!-- THUMBNAIL -->
+    <div class="container mt-2 d-block justify-content-center">
+      {% if post.thumbnail %}
+        <img class="img-thumbnail mx-auto d-block" src="{{ thumbnail_loc }}"
+         alt="Post Thumbnail">
+        <!-- Photo Credit -->
+        {# <!--<div class="card-body">--> #}
+        {# <!--<p class="card-text text-center"></p>--> #}
+        {# <!--</div>--> #}
+      {% endif %}
+    </div>
+
+    <!-- POST CONTENT -->
     <p>{{ post.content }}</p>
 </div>
 

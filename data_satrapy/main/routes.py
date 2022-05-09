@@ -1,7 +1,7 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, url_for, Blueprint
 from data_satrapy.models import Post
 from data_satrapy.main.utils import ordered_field_list, post_field_num
-from data_satrapy import CONTENT_COL
+from data_satrapy import CONTENT_COL, CONTENT_COL_2
 
 
 main = Blueprint("main", __name__)
@@ -22,8 +22,9 @@ def home():
 
 @main.route("/about")
 def about():
-
+    avatar = "about_me_pic.PNG"
+    about_me_pic = url_for("static", filename=f"pics/{avatar}")
     fields_list = ordered_field_list()
     return render_template("about.html", title="About", about_active="active",
-                           grid_size=CONTENT_COL,
+                           grid_size=CONTENT_COL_2, about_me_pic=about_me_pic,
                            fields_list=fields_list, post_field_num=post_field_num)

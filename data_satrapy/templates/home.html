@@ -28,6 +28,14 @@
                        onmouseover="this.style.color='#428bca'" onmouseout="this.style.backgroundColor=''">{{ post.title }}</a>
                 </h3>
             </div>
+
+
+            <div class="container mt-2 d-block justify-content-center">
+              {% if post.thumbnail %}
+                <img class="img-thumbnail mx-auto d-block" src='{{ url_for("static", filename="pics/" + post.thumbnail) }}'
+                 alt="Post Thumbnail">
+              {% endif %}
+            </div>
             <p>{{ post.content }}</p>
     </div>
 {% endfor %}

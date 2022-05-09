@@ -14,12 +14,13 @@ posts = Blueprint("posts", __name__)
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.thumbnail:
-        thumbnail = url_for("static", filename="pics/" + post.thumbnail)
-        return render_template("post.html", title="Post", post=post,
-                               thumbnail=thumbnail, grid_size=CONTENT_COL_2)
-
     fields_list = ordered_field_list()
+    if post.thumbnail:
+        thumbnail_loc = url_for("static", filename="pics/" + post.thumbnail)
+        return render_template("post.html", title="Post", post=post,
+                               thumbnail_loc=thumbnail_loc, grid_size=CONTENT_COL_2,
+                               fields_list=fields_list, post_field_num=post_field_num)
+
     return render_template("post.html", title="Post", post=post,
                            grid_size=CONTENT_COL_2,
                            fields_list=fields_list, post_field_num=post_field_num)
@@ -29,7 +30,6 @@ def post(post_id):
 @login_required
 def new_post():
     form = PostForm()
-    subjects = type(form.post_subject.data)
     options = list_subs()
     form.post_subject.choices = options
     if form.validate_on_submit():
@@ -51,7 +51,7 @@ def new_post():
         return redirect(url_for("main.home"))
 
     return render_template("create_post.html", title="New Post", form=form,
-                           subjects=subjects, new_post_active="active",
+                            new_post_active="active",
                            legend="Create A New Post", grid_size=CONTENT_COL)
 
 
