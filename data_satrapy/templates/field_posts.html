@@ -14,10 +14,16 @@
                     <a class="text-decoration-none text-primary" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
                 </h3>
             </div>
-            <p>{{ post.content }}</p>
+            <!-- POST CONTENT -->
+            {% if post.content_html %}
+                <p>{{ post.content_html | safe }}</p>
+            {% else %}
+                <p>{{ post.content }}</p>
+            {% endif %}
         </div>
     {% endfor %}
 
+    <!-- Pagination -->
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
       {% if page_num %}
         {% if posts.page == page_num %}
