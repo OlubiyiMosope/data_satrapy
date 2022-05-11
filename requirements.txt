@@ -12,5 +12,5 @@ jinja2==3.0.3
 markdown==3.3.7
 pillow==8.2.0
 sqlalchemy==1.4.7
-werkzeug==2.0.2
+werkzeug==0.16.0
 wtforms==3.0.0
