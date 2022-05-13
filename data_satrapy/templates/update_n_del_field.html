@@ -79,7 +79,7 @@
         <div class="container">
             <ul class="list-group row">
                 {% for field in fields_list %}
-                <a href="{{ url_for('fields.update_field', subject_id=field.id) }}" class="list-group-item list-group-item-action">
+                <a href="{{ url_for('fields.update_field', field_id=field.id) }}" class="list-group-item list-group-item-action">
                         {{ field.subject }}
                 </a>
             {% endfor %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block aboutme %}
-<div class="col-md-5 grid m-3 bg-light">
+<div class="col-md-6 grid px-4 bg-light border">
   <form method="POST" action="" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <fieldset class="row my-3">
@@ -71,9 +71,9 @@
 
 {% endblock aboutme %}
 
-
+<!-- PREVIEW SECTION-->
 {% block content %}
-<div class="container m-3">
+<div class="container ">
   <legend class="text-center border-bottom mb-2">Post Content HTML Rendering Preview</legend>
 
   <form action="" class="border bg-white">

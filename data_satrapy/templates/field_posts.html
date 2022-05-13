@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1 class="mb-3 mt-2 text-center">Posts in {{ subject.subject }} field, ({{ posts.total }})</h1>
+<h3 class="mb-3 mt-2 text-center">Posts in {{ subject.subject }} field, ({{ posts.total }})</h3>
     {% for post in posts.items %}
         <div class="container my-2 bg-white border">
             <h5 class="small border-bottom pt-2 pb-1 me-4 text-dark">

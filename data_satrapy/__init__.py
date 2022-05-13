@@ -16,7 +16,7 @@ mail = Mail()
 pagedown = PageDown()
 
 CONTENT_COL = 6
-CONTENT_COL_2 = 8
+CONTENT_COL_2 = 7
 
 
 def create_app(config_class=Config):

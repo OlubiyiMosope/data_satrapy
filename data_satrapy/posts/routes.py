@@ -52,7 +52,7 @@ def new_post():
 
     return render_template("create_post.html", title="New Post", form=form,
                             new_post_active="active",
-                           legend="Create A New Post", grid_size=CONTENT_COL)
+                           legend="Create A New Post", grid_size=6)
 
 
 @posts.route("/post/<int:post_id>/update", methods=["GET", "POST"])
@@ -80,7 +80,7 @@ def update_post(post_id):
         form.content.data = post.content
 
     return render_template("create_post.html", title="Update Post",
-                           form=form, legend="Update Post", grid_size=CONTENT_COL,)
+                           form=form, legend="Update Post", grid_size=6)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=["GET", "POST"])

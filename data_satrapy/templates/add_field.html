@@ -3,11 +3,12 @@
 
 {% block content %}
 
-<div class="col-md-{{ grid_size }} grid">
+<div class="container grid">
+<div class="mx-auto px-5">
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <fieldset class="row my-3">
-          <legend class="border-bottom mb-2">Add New Field</legend>
+          <legend class="border-bottom mb-2 text-center">Add New Field</legend>
           <div  class="form-label">
             {{ form.post_subject.label(class="form-label") }}
 
@@ -35,16 +36,17 @@
     <!-- List out fields in the database -->
     <div class=" border-top py-5">
         <h5 class="ps-3">All Fields in the Database (alphabetically):</h5>
-        <small class="row m-1 ps-2 text-muted">Click to update or delete field</small>
+        <small class="row m-1 ps-2 text-muted">Click to update or delete a field</small>
         <div class="list-group">
             {% for field in fields_list %}
-                <a href="{{ url_for('fields.update_field', subject_id=field.id) }}" class="list-group-item list-group-item-action">
+                <a href="{{ url_for('fields.update_field', field_id=field.id) }}" class="list-group-item list-group-item-action">
                         {{ field.subject }}
                 </a>
             {% endfor %}
         </div>
     </div>
 
+</div>
 </div>
 
 {% endblock content %}

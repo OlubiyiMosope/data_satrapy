@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, request, render_template, url_for
 from flask_login import login_required
-from data_satrapy import db, CONTENT_COL_2
+from data_satrapy import db, CONTENT_COL_2, CONTENT_COL
 from data_satrapy.models import Field, Post
 from data_satrapy.fields.forms import AddFieldForm, UpdateDeleteFieldForm
 from data_satrapy.fields.utils import delete_field
@@ -8,8 +8,6 @@ from data_satrapy.main.utils import ordered_field_list, post_field_num
 
 
 fields = Blueprint("fields", __name__)
-# CONTENT_COL = 6
-# CONTENT_COL_2 = 8
 
 
 @fields.route("/field/", methods=["GET", "POST"])
@@ -27,7 +25,7 @@ def add_field():
 
     fields_list = ordered_field_list()
     return render_template("add_field.html", title="Add Field", form=form,
-                           add_field_active="active", grid_size=CONTENT_COL_2,
+                           add_field_active="active", grid_size=CONTENT_COL,
                            fields_list=fields_list, post_field_num=post_field_num)
 
 
@@ -45,22 +43,22 @@ def field_posts(field_name):
                            fields_list=fields_list, post_field_num=post_field_num)
 
 
-@fields.route("/field/<int:subject_id>/update", methods=["GET", "POST"])
+@fields.route("/field/<int:field_id>/update", methods=["GET", "POST"])
 @login_required
-def update_field(subject_id):
-    field = Field.query.get_or_404(subject_id)
+def update_field(field_id):
+    field = Field.query.get_or_404(field_id)
     form = UpdateDeleteFieldForm()
 
     # if request.method == "POST":
     if request.form.get("delete") == "delete":
-        delete_field(subject_id)
+        delete_field(field_id)
         return redirect(url_for("fields.add_field"))
 
     if form.validate_on_submit():
         field.subject = form.new_field.data.strip().title()
         db.session.commit()
         flash("You have successfully updated the field", "success")
-        return redirect(url_for("fields.update_field", subject_id=subject_id))
+        return redirect(url_for("fields.update_field", field_id=field_id))
     elif request.method == "GET":
         # form.old_field.data = field.subject
         form.new_field.data = field.subject

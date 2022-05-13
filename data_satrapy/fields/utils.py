@@ -16,9 +16,10 @@ def list_subjects():
     return list(zip(field_ids, fields))
 
 
-def delete_field(subject_id):
-    field = Field.query.get_or_404(subject_id)
-    flash(f"You have deleted the field '{field.subject}'!", "success")
+def delete_field(field_id):
+    """Delete field with field_id"""
+    field = Field.query.get_or_404(field_id)
     db.session.delete(field)
     db.session.commit()
+    flash(f"You have deleted the field '{field.subject}'!", "success")
     return redirect(url_for("fields.add_field"))

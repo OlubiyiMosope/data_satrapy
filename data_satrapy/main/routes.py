@@ -16,7 +16,7 @@ def home():
 
     fields_list = ordered_field_list()
     return render_template("home.html", home_active="active", posts=posts,
-                           grid_size=CONTENT_COL, fields_list=fields_list,
+                           grid_size=CONTENT_COL_2, fields_list=fields_list,
                            post_field_num=post_field_num)
 
 
