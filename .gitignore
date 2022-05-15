@@ -4,3 +4,4 @@ insert_dummy_post_to_db/
 __pycache__/
 pics/
 site.db
+.env
