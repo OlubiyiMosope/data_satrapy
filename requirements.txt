@@ -1,4 +1,5 @@
 bleach==3.3.0
+click==7.1.2
 email-validator==1.2.1
 flask==2.0.2
 flask-bcrypt==0.7.1
