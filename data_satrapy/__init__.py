@@ -4,24 +4,24 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_pagedown import PageDown
-from data_satrapy.config import Config
+from data_satrapy.config import config
 
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-login_manager.login_view = "users.login"
-login_manager.login_message_category = "info"
 mail = Mail()
 pagedown = PageDown()
+login_manager.login_view = "users.login"
+login_manager.login_message_category = "info"
 
 CONTENT_COL = 6
 CONTENT_COL_2 = 7
 
 
-def create_app(config_class=Config):
+def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config[config_name])
 
     db.init_app(app)
     bcrypt.init_app(app)
@@ -29,8 +29,12 @@ def create_app(config_class=Config):
     mail.init_app(app)
     pagedown.init_app(app)
 
-    with app.app_context():
-        db.create_all()
+    if app.config['SSL_REDIRECT']:
+        from flask_sslify import SSLify
+        sslify = SSLify(app)
+
+    # with data_satrapy.app_context():
+    #     db.create_all()
 
     from data_satrapy.users.routes import users
     from data_satrapy.posts.routes import posts
