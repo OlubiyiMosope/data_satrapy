@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT satrapy:app
+web: gunicorn satrapy:app
