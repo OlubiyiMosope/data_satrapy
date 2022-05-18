@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default="default.jpg")
-    posts = db.relationship("Post", backref="author", lazy=True)
+    posts_user_rel = db.relationship("Post", backref="author", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config["SECRET_KEY"], expires_sec)
@@ -40,7 +40,7 @@ class User(db.Model, UserMixin):
 class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(120), unique=True, nullable=False)  #
-    posts = db.relationship("Post", backref="field_rel", lazy=True)
+    posts_field_rel = db.relationship("Post", backref="field_rel", lazy=True)
 
     def __repr__(self):
         return f"{self.subject}"
