@@ -40,7 +40,7 @@ class User(db.Model, UserMixin):
 class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(120), unique=True, nullable=False)  #
-    fields = db.relationship("Post", backref="field", lazy=True)
+    posts = db.relationship("Post", backref="field_rel", lazy=True)
 
     def __repr__(self):
         return f"{self.subject}"
@@ -68,7 +68,7 @@ class Post(db.Model):
                                     tags=allowed_tags, strip=True))
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}', '{self.field}', '{self.thumbnail}')"
+        return f"Post('{self.title}', '{self.date_posted}', '{self.field_rel}', '{self.thumbnail}')"
 
 
 db.event.listen(Post.content, 'set', Post.on_changed_body)

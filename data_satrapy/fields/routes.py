@@ -33,7 +33,7 @@ def add_field():
 def field_posts(field_name):
     page = request.args.get("page", 1, type=int)
     subject = Field.query.filter_by(subject=field_name).first_or_404()
-    posts = Post.query.filter_by(field=subject)\
+    posts = Post.query.filter_by(field_rel=subject)\
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
 

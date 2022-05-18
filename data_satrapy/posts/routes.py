@@ -37,13 +37,13 @@ def new_post():
         if form.thumbnail.data:
             img_file = save_picture(form.thumbnail.data)
             post = Post(title=form.title.data, content=form.content.data,
-                        author=current_user, field=field,
+                        author=current_user, field_rel=field,
                         thumbnail=img_file)
             db.session.add(post)
             db.session.commit()
         else:
             post = Post(title=form.title.data, content=form.content.data,
-                        author=current_user, field=field,)
+                        author=current_user, field_rel=field,)
             db.session.add(post)
             db.session.commit()
 
@@ -62,7 +62,7 @@ def update_post(post_id):
     if post.author != current_user:
         abort(403)
 
-    form = PostForm(post_subject=post.field)
+    form = PostForm(post_subject=post.field_rel)
     options = list_subs()
     form.post_subject.choices = options
     if form.validate_on_submit():
@@ -71,7 +71,7 @@ def update_post(post_id):
             post.thumbnail = img_file
         post.title = form.title.data
         post.content = form.content.data
-        post.field = find_field(form.post_subject.data)
+        post.field_rel = find_field(form.post_subject.data)
         db.session.commit()
         flash("Your post has been updated", "success")
         return redirect(url_for("posts.post", post_id=post.id))

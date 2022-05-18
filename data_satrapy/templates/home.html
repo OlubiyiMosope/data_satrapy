@@ -6,8 +6,8 @@
             <h5 class="small border-bottom pt-2 pb-1 me-4"> <!--  -->
 
                 <a class="me-2 text-decoration-none text-muted"
-                   href="{{ url_for('fields.field_posts', field_name=post.field.subject) }}">
-                    {{ post.field.subject }}
+                   href="{{ url_for('fields.field_posts', field_name=post.field_rel.subject) }}">
+                    {{ post.field_rel.subject }}
                 </a>
                 <small class="text-muted">{{ post.date_posted.strftime("%Y-%m-%d") }}</small>
             </h5>

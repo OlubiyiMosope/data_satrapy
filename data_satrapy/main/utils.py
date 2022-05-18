@@ -12,5 +12,5 @@ def post_field_num(field):
     :return: int. number of posts on the field.
     """
     subject = Field.query.filter_by(subject=field).first_or_404()
-    posts = Post.query.filter_by(field=subject).paginate()
+    posts = Post.query.filter_by(field_rel=subject).paginate()
     return posts.total

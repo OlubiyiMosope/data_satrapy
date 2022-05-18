@@ -5,7 +5,7 @@
     {% for post in posts.items %}
         <div class="container my-2 bg-white border">
             <h5 class="small border-bottom pt-2 pb-1 me-4 text-dark">
-                {{ post.field.subject }}
+                {{ post.field_rel.subject }}
                 <small class="text-muted ms-1">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
             </h5>
 
