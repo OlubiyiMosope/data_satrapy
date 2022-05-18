@@ -56,8 +56,8 @@ class Post(db.Model):
     content_html = db.Column(db.Text,)
     thumbnail = db.Column(db.String(20))
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    field_id = db.Column(db.Integer, db.ForeignKey("field.id"), nullable=False)  # default value for "others"
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    field_id = db.Column(db.Integer, db.ForeignKey("fields.id"), nullable=False)  # default value for "others"
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
