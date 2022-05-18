@@ -13,6 +13,7 @@ def load_user(user_id):
 
 
 class User(db.Model, UserMixin):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -38,6 +39,7 @@ class User(db.Model, UserMixin):
 
 
 class Field(db.Model):
+    __tablename__ = "fields"
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(120), unique=True, nullable=False)  #
     posts_field_rel = db.relationship("Post", backref="field_rel", lazy=True)
@@ -47,6 +49,7 @@ class Field(db.Model):
 
 
 class Post(db.Model):
+    __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
