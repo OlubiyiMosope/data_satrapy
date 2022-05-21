@@ -2,7 +2,9 @@
 .idea/
 insert_dummy_post_to_db/
 __pycache__/
-pics/
+# pics/
 site.db
 .env
 *.sqlite
+data-dev.sqlite
+data.sqlite
