@@ -1,5 +1,6 @@
+import os
 from flask import (render_template, url_for, flash, redirect,
-                   abort, request, Blueprint)
+                   abort, request, current_app, Blueprint)
 from flask_login import login_required, current_user
 from data_satrapy import db, CONTENT_COL, CONTENT_COL_2
 from data_satrapy.models import Post
@@ -16,7 +17,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     fields_list = ordered_field_list()
     if post.thumbnail:
-        thumbnail_loc = url_for("static", filename="pics/" + post.thumbnail)
+        thumbnail_loc = url_for("static", filename="thumbnails/" + post.thumbnail)
         return render_template("post.html", title="Post", post=post,
                                thumbnail_loc=thumbnail_loc, grid_size=CONTENT_COL_2,
                                fields_list=fields_list, post_field_num=post_field_num)
@@ -67,6 +68,10 @@ def update_post(post_id):
     form.post_subject.choices = options
     if form.validate_on_submit():
         if form.thumbnail.data:
+            # delete old thumbnail file
+            if post.thumbnail:
+                post_thumbnail = os.path.join(current_app.root_path, "static/thumbnails", post.thumbnail)
+                os.remove(post_thumbnail)
             img_file = save_picture(form.thumbnail.data)
             post.thumbnail = img_file
         post.title = form.title.data
