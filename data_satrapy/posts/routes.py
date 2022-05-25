@@ -33,10 +33,14 @@ def new_post():
     form = PostForm()
     options = list_subs()
     form.post_subject.choices = options
+    # manually name thumbnail file
+    all_posts = Post.query.all()
+    post_id = all_posts[-1].id + 1
     if form.validate_on_submit():
         field = find_field(form.post_subject.data)
         if form.thumbnail.data:
-            img_file = save_picture(form.thumbnail.data)
+            filename = f"post-{post_id}"
+            img_file = save_picture(form.thumbnail.data, filename)
             post = Post(title=form.title.data, content=form.content.data,
                         author=current_user, field_rel=field,
                         thumbnail=img_file)
@@ -72,7 +76,8 @@ def update_post(post_id):
             if post.thumbnail:
                 post_thumbnail = os.path.join(current_app.root_path, "static/thumbnails", post.thumbnail)
                 os.remove(post_thumbnail)
-            img_file = save_picture(form.thumbnail.data)
+            filename = f"post-{post_id}"
+            img_file = save_picture(form.thumbnail.data, filename)
             post.thumbnail = img_file
         post.title = form.title.data
         post.content = form.content.data
