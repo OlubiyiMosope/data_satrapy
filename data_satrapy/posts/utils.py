@@ -11,10 +11,10 @@ def list_subs():
     return subs
 
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
+def save_picture(form_picture, filename):
+    # random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
+    picture_fn = filename + f_ext  # random_hex + f_ext
     picture_path = os.path.join(current_app.root_path, "static/thumbnails", picture_fn)
 
     output_size = (640, 320)  # (125, 125)
