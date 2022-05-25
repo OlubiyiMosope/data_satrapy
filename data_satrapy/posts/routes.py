@@ -72,10 +72,11 @@ def update_post(post_id):
     form.post_subject.choices = options
     if form.validate_on_submit():
         if form.thumbnail.data:
-            # delete old thumbnail file
+            # delete old thumbnail file if it exists
             if post.thumbnail:
                 post_thumbnail = os.path.join(current_app.root_path, "static/thumbnails", post.thumbnail)
-                os.remove(post_thumbnail)
+                if os.path.exists(post_thumbnail):
+                    os.remove(post_thumbnail)
             filename = f"post-{post_id}"
             img_file = save_picture(form.thumbnail.data, filename)
             post.thumbnail = img_file
