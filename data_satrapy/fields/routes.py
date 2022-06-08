@@ -16,7 +16,6 @@ def add_field():
     form = AddFieldForm()
     if form.validate_on_submit():
         subject = str(form.post_subject.data).strip().title()
-        # if not Field.query.filter_by(subject=subject).first():
         field = Field(subject=subject)
         db.session.add(field)
         db.session.commit()
@@ -39,7 +38,7 @@ def field_posts(field_name):
 
     fields_list = ordered_field_list()
     return render_template("field_posts.html", title=field_name, subject=subject,
-                           posts=posts, grid_size=CONTENT_COL_2,
+                           posts=posts, grid_size=CONTENT_COL_2, len=len,
                            fields_list=fields_list, post_field_num=post_field_num)
 
 
@@ -49,9 +48,15 @@ def update_field(field_id):
     field = Field.query.get_or_404(field_id)
     form = UpdateDeleteFieldForm()
 
-    # if request.method == "POST":
+    # delete field
     if request.form.get("delete") == "delete":
-        delete_field(field_id)
+        if Post.query.filter_by(field_id=field_id).first():
+            flash("""This field is attached to at least one post. 
+            Please delete all posts attached to this field, only then will you be able to delete this field.""",
+                  "danger")
+            return redirect(url_for("fields.update_field", field_id=field_id))
+        else:
+            delete_field(field_id)
         return redirect(url_for("fields.add_field"))
 
     if form.validate_on_submit():
@@ -65,6 +70,6 @@ def update_field(field_id):
 
     fields_list = ordered_field_list()
     return render_template("update_n_del_field.html", title="Update/Delete Field",
-                           form=form, grid_size=CONTENT_COL_2,
+                           form=form, grid_size=CONTENT_COL,
                            del_field=field.subject, current_field=field.subject,
                            fields_list=fields_list, post_field_num=post_field_num)

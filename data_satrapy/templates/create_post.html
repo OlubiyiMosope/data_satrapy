@@ -6,6 +6,8 @@
     {{ form.hidden_tag() }}
     <fieldset class="row my-3">
       <legend class="border-bottom mb-2">{{ legend }}</legend>
+
+        <!-- Title -->
       <div  class="form-label">
         {{ form.title.label(class="form-label") }}
 
@@ -21,6 +23,7 @@
         {% endif %}
       </div>
 
+        <!-- Post Subject -->
       <div  class="form-label mt-2">
           {{ form.post_subject.label(class="form-label") }}
 
@@ -36,6 +39,7 @@
           {% endif %}
       </div>
 
+        <!-- Thumbnail -->
       <div class="form-label mt-2">
           {{ form.thumbnail.label() }}
           {{ form.thumbnail(class="form-control mt-1") }}
@@ -46,25 +50,61 @@
               {% endfor %}
           {% endif %}
       </div>
+
+        <!-- Thumbnail Source -->
+      <div  class="form-label">
+        {{ form.thumbnail_src.label(class="form-label") }}
+
+        {% if form.thumbnail_src.errors %}
+          {{ form.thumbnail_src(class="form-control form-control-md is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.thumbnail_src.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.thumbnail_src(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+
+      <!-- Notebook -->
+      <div  class="form-label">
+        {{ form.nb_filename.label(class="form-label") }}
+
+        {% if form.nb_filename.errors %}
+          {{ form.nb_filename(class="form-control form-control-md is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.nb_filename.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.nb_filename(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+
+        <!-- Content -->
       <div class="form-label mt-2">
         {{ form.content.label(class="form-label" ) }}
 
         {% if form.content.errors %}
-          {{ form.content(class="form-control form-control-lg is-invalid") }}
+          {{ form.content(class="form-control form-control-sm is-invalid") }}
           <div class="invalid-feedback">
               {% for error in form.content.errors%}
                 <span>{{ error }}</span>
               {% endfor %}
           </div>
         {% else %}
-          {{ form.content(only_input=True, class="form-control form-control-lg" ) }}
+          {{ form.content(only_input=True, class="form-control form-control-sm" ) }}
         {% endif %}
 
       </div>
     </fieldset>
+
+
     <div class="form-label mt-2 mb-2">
         {{ form.submit(class="btn btn-primary") }}
-      </div>
+    </div>
 
   </form>
 </div>
@@ -76,8 +116,8 @@
 <div class="container ">
   <legend class="text-center border-bottom mb-2">Post Content HTML Rendering Preview</legend>
 
-  <form action="" class="border bg-white">
-    {{ form.content(only_preview=True,) }}
+  <form action="" class="border bg-white mb-3">
+    {{ form.content(only_preview=True, placeholder="Post preview shows here") }}
   </form>
 </div>
 

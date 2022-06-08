@@ -15,11 +15,7 @@
                 </h3>
             </div>
             <!-- POST CONTENT -->
-            {% if post.content_html %}
-                <p>{{ post.content_html | safe }}</p>
-            {% else %}
-                <p>{{ post.content }}</p>
-            {% endif %}
+            {% include "sub_template/truncate_post.html" %}
         </div>
     {% endfor %}
 

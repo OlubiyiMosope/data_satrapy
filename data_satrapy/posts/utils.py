@@ -1,4 +1,5 @@
 import os
+import re
 # import secrets
 from PIL import Image
 from flask import current_app
@@ -10,6 +11,10 @@ def list_subs():
     subs = [str(field) for field in Field.query.all()]
     subs.sort()
     return subs
+
+
+def find_field(data):
+    return Field.query.filter_by(subject=data).first()
 
 
 def save_picture(form_picture, filename):
@@ -27,5 +32,11 @@ def save_picture(form_picture, filename):
     return picture_fn
 
 
-def find_field(data):
-    return Field.query.filter_by(subject=data).first()
+def src_match(string, pattern="(https|http):\S+"):
+    try:
+        result = re.search(pattern, string)
+        link = result.group()
+        name = string.replace(link, "").strip()
+        return name, link
+    except AttributeError:
+        pass

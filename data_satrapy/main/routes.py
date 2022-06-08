@@ -15,7 +15,7 @@ def home():
         paginate(page=page, per_page=5)
 
     fields_list = ordered_field_list()
-    return render_template("home.html", home_active="active", posts=posts,
+    return render_template("home.html", home_active="active", posts=posts, len=len,
                            grid_size=CONTENT_COL_2, fields_list=fields_list,
                            post_field_num=post_field_num)
 

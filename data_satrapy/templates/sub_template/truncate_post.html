@@ -1,0 +1,14 @@
+{% if post.content_html %}
+    {% if len(post.content_html) > 350 %}
+        <p>{{ post.content_html[:350] | safe }}...</p>
+    {% else %}
+        <p>{{ post.content_html | safe }}</p>
+    {% endif %}
+
+{% else %}
+   {% if len(post.content) > 350 %}
+        <p>{{ post.content[:350] | safe }}...</p>
+    {% else %}
+        <p>{{ post.content | safe }}</p>
+    {% endif %}
+{% endif %}

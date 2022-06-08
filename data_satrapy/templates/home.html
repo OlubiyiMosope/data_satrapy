@@ -25,11 +25,8 @@
                  alt="Post Thumbnail">
               {% endif %}
             </div>
-            {% if post.content_html %}
-                <p>{{ post.content_html | safe }}</p>
-            {% else %}
-                <p>{{ post.content }}</p>
-            {% endif %}
+            <!-- POST CONTENT -->
+            {% include "sub_template/truncate_post.html" %}
     </div>
 {% endfor %}
 

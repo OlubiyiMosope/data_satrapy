@@ -41,7 +41,7 @@ class User(db.Model, UserMixin):
 class Field(db.Model):
     __tablename__ = "fields"
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String(120), unique=True, nullable=False)  #
+    subject = db.Column(db.String(120), unique=True, nullable=False)
     posts = db.relationship("Post", backref="field_rel", lazy=True)
 
     def __repr__(self):
@@ -54,7 +54,9 @@ class Post(db.Model):
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
     content_html = db.Column(db.Text,)
+    nb_filename = db.Column(db.String(120),)
     thumbnail = db.Column(db.String(20))
+    thumbnail_src = db.Column(db.String(80))
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey("fields.id"), nullable=False)  # default value for "others"

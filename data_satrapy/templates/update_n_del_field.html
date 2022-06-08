@@ -1,14 +1,10 @@
 {% extends "layout.html" %}
 
 
-{% block auth_navbar %}
-  <li class="nav-item"> <a class="nav-link {{ add_field_active }}" href="{{ url_for('fields.add_field') }}">Add Field</a> </li>
-{% endblock auth_navbar %}
-
-
 {% block content %}
 
-<div class="col-md-{{ grid_size }} grid">  <!-- {# d-flex justify-content-center #} -->
+<div class="container grid">
+<div class="mx-auto px-5">
     <form method="POST" action="" class="mb-5">
         {{ form.hidden_tag() }}
         <fieldset class="row my-3">
@@ -87,5 +83,5 @@
         </div>
     </div>
 </div>
-
+</div>
 {% endblock content %}

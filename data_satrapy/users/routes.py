@@ -11,7 +11,7 @@ from data_satrapy.main.utils import ordered_field_list, post_field_num
 users = Blueprint('users', __name__)
 
 
-@users.route("/register", methods=["GET", "POST"])
+@users.route("/admin_register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
@@ -29,7 +29,7 @@ def register():
                            fields_list=fields_list, post_field_num=post_field_num)
 
 
-@users.route("/login", methods=["GET", "POST"])
+@users.route("/admin_login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         # flash("You are already logged in.", "success")
